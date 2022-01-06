@@ -27,7 +27,7 @@ describe('RRule', function () {
     const s2 = rrulestr(s1).toString()
     expect(s1).equals(s2, s1 + ' => ' + s2)
   })
-  
+
   it('rrulestr itteration not infinite when interval 0', function () {
     ['FREQ=YEARLY;INTERVAL=0;BYSETPOS=1;BYDAY=MO',
     'FREQ=MONTHLY;INTERVAL=0;BYSETPOS=1;BYDAY=MO',
@@ -3668,7 +3668,7 @@ describe('RRule', function () {
 
       expect(recurrence)
         .to.deep.equal(
-          expected 
+          expected
         )
 
       resetMockDate()
@@ -3688,7 +3688,7 @@ describe('RRule', function () {
 
       expect(recurrence)
         .to.deep.equal(
-          expected 
+          expected
         )
 
       resetMockDate()
@@ -3708,7 +3708,7 @@ describe('RRule', function () {
 
       expect(recurrence)
         .to.deep.equal(
-          expected 
+          expected
         )
 
       resetMockDate()
@@ -3732,4 +3732,24 @@ describe('RRule', function () {
     expect(() => rule.between(invalidDate, validDate)).to.throw('Invalid date passed in to RRule.between')
     expect(() => rule.between(validDate, invalidDate)).to.throw('Invalid date passed in to RRule.between')
   })
+    it('Test Between with TZID', ()=>{
+        const rruleString = 'RRULE:FREQ=DAILY'
+        const DTStart = 'TZID=Asia/Dubai:20220104T123000'
+        const rule = rrulestr(`DTSTART;${DTStart}\n${rruleString}`, {forceset: true})
+        const rets = rule.between(new Date(Date.UTC(2022, 0, 4, 16, 0, 0)),
+            new Date(Date.UTC(2022, 0, 5, 16, 0, 0)), true)
+        rets.forEach(date => {
+            expect(date.toUTCString()).to.equal('Wed, 05 Jan 2022 08:30:00 GMT')
+        })
+    })
+    it('Test Between with TZID and BYDAY', ()=>{
+        const rruleString = 'RRULE:FREQ=WEEKLY;WKST=SU;UNTIL=20220311T075959Z;BYDAY=MO,TH,TU,WE'
+        const DTStart = 'TZID=America/Los_Angeles:20220104T171000'
+        const rule = rrulestr(`DTSTART;${DTStart}\n${rruleString}`, {forceset: true})
+        const rets = rule.between(new Date(Date.UTC(2022, 0, 4, 16, 0, 0)),
+            new Date(Date.UTC(2022, 0, 5, 16, 0, 0)), true)
+        rets.forEach(date => {
+           expect(date.toUTCString()).to.equal('Wed, 05 Jan 2022 01:10:00 GMT')
+        })
+    })
 })

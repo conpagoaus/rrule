@@ -17,7 +17,7 @@
   "typings": "dist/esm/src/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jakubroztocil/rrule.git"
+    "url": "git://github.com/ruoxijiang/rrule.git"
   },
   "husky": {
     "hooks": {

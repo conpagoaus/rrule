@@ -1,4 +1,4 @@
-import * as $ from 'jquery'
+import $ from 'jquery'
 
 import { RRule, Weekday, Options } from '../src/index'
 
@@ -7,22 +7,14 @@ import { RRule, Weekday, Options } from '../src/index'
 import * as rruleExports from '../src/index'
 $.extend(window, rruleExports)
 
-const getDay = (i: number) => [
-  RRule.MO,
-  RRule.TU,
-  RRule.WE,
-  RRule.TH,
-  RRule.FR,
-  RRule.SA,
-  RRule.SU
-][i]
+const getDay = (i: number) =>
+  [RRule.MO, RRule.TU, RRule.WE, RRule.TH, RRule.FR, RRule.SA, RRule.SU][i]
 
-const makeArray = (s: string | string[]) =>
-  Array.isArray(s) ? s : [s]
+const makeArray = (s: string | string[]) => (Array.isArray(s) ? s : [s])
 
 const getFormValues = function ($form: JQuery<HTMLElement>) {
   const paramObj: { [K in keyof Partial<Options>]: string | string[] } = {}
-  $form.serializeArray().forEach(kv => {
+  $form.serializeArray().forEach((kv) => {
     const k = kv.name as keyof Options
     if (paramObj.hasOwnProperty(k)) {
       const v = makeArray(paramObj[k]!)
@@ -96,7 +88,7 @@ const getOptionsCode = function (options: Partial<Options>) {
     return `${k}: ${v}`
   })
 
-  return `{\n  ${items.filter(v => !!v).join(',\n  ')}\n}`
+  return `{\n  ${items.filter((v) => !!v).join(',\n  ')}\n}`
 }
 
 const makeRows = function (dates: Date[]) {
@@ -147,12 +139,7 @@ $(function () {
       $('<a />', {
         href: `#${$(this).attr('id')}`
       })
-        .text(
-          $(this)
-            .find('h3')
-            .hide()
-            .text()
-        )
+        .text($(this).find('h3').hide().text())
         .appendTo($tabs)
         .on('click', function () {
           activateTab($(this))
@@ -207,7 +194,7 @@ $(function () {
 
             case 'byweekday':
               if (Array.isArray(value)) {
-                options[key] = value.map(i => getDay(parseInt(i, 10)))
+                options[key] = value.map((i) => getDay(parseInt(i, 10)))
               } else {
                 options[key] = getDay(parseInt(value, 10))
               }
@@ -243,16 +230,16 @@ $(function () {
               if (!Array.isArray(value)) {
                 value = value.split(/[,\s]+/)
               }
-              value = value.filter(v => v)
-              options[key] = value.map(n => parseInt(n, 10))
+              value = value.filter((v) => v)
+              options[key] = value.map((n) => parseInt(n, 10))
               continue
 
             case 'bynweekday':
               if (!Array.isArray(value)) {
                 value = value.split(/[,\s]+/)
               }
-              value = value.filter(v => v)
-              options[key] = [value.map(n => parseInt(n, 10))]
+              value = value.filter((v) => v)
+              options[key] = [value.map((n) => parseInt(n, 10))]
               continue
 
             case 'byeaster':
@@ -294,21 +281,13 @@ $(function () {
 
     const rfc = rule.toString()
     const text = rule.toText()
-    $('#rfc-output a')
-      .text(rfc)
-      .attr('href', `#/rfc/${rfc}`)
-    $('#text-output a')
-      .text(text)
-      .attr('href', `#/text/${text}`)
+    $('#rfc-output a').text(rfc).attr('href', `#/rfc/${rfc}`)
+    $('#text-output a').text(text).attr('href', `#/text/${text}`)
     $('#options-output').text(getOptionsCode(rule.origOptions))
     if (inputMethod === 'options') {
-      $('#options-output')
-        .parents('tr')
-        .hide()
+      $('#options-output').parents('tr').hide()
     } else {
-      $('#options-output')
-        .parents('tr')
-        .show()
+      $('#options-output').parents('tr').show()
     }
     const max = 500
     const dates = rule.all(function (date, i) {
@@ -338,9 +317,7 @@ $(function () {
         const method = match[1] // rfc | text
         const arg = match[2]
         activateTab($(`a[href='#${method}-input']`))
-        return $(`#${method}-input input:first`)
-          .val(arg)
-          .trigger('change')
+        return $(`#${method}-input input:first`).val(arg).trigger('change')
       }
     }
   }

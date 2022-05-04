@@ -5,20 +5,13 @@
     "noImplicitAny": true,
     "sourceMap": true,
     "module": "commonjs",
+    "esModuleInterop": true,
     "noEmitOnError": true,
     "target": "es6",
     "jsx": "react",
     "baseUrl": ".",
-    "rootDirs": [
-      "./src/",
-      "./test/",
-    ]
+    "rootDirs": ["./src/", "./test/"]
   },
-  "include": [
-    "./src/**/*",
-    "./test/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-  ]
+  "include": ["./src/**/*", "./test/**/*"],
+  "exclude": ["node_modules"]
 }
